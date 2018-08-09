@@ -27,29 +27,25 @@ namespace ThreadPoolTest
                 PrintWithThreadPool(tp, i);
             }
             myWatch.Stop();
-            tp.EnqueueJob(o=>
-            {
-                Console.WriteLine("Elapsed Time with threadpooling: {0}", myWatch.ElapsedTicks);
-            });
+            Console.WriteLine("Elapsed Time with threadpooling: {0}", myWatch.ElapsedTicks);
         }
 
         static void PrintWithThread(int i)
         {
             Thread t = new Thread(() => { Print(i); });
-            new Thread(Print);
             t.Start();
         }
 
         static void PrintWithThreadPool(BobThreadPool.ThreadPool tp, int i)
         {
-            //Action<object> a = o => Print((int)o);
-            //Task t = new Task(a, i);
-            tp.EnqueueJob(Print, i);
+            Action<object> a = o => Print((int)o);
+            Task t = new Task(a, i);
+            tp.EnqueueTask(t);
         }
 
-        static void Print(object o)
+        static void Print(int i)
         {
-            Console.WriteLine("this is task number {0}", (int)o);
+            Console.WriteLine("this is task number {0}", i);
         }
     }
 }

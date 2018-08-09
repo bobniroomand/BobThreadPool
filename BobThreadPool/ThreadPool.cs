@@ -9,13 +9,13 @@ namespace BobThreadPool
 {
     public class ThreadPool
     {
-        private Queue<Job> jobs;
-        private Queue<Job> runningJobs;
+        private Queue<Task> tasks;
+        private Queue<Task> runningTasks;
         private List<Thread> threads;
 
         public ThreadPool(int size = 10)
         {
-            jobs = new Queue<Job>();
+            tasks = new Queue<Task>();
             threads = new List<Thread>();
             for (int i = 0; i < size; i++)
             {
@@ -25,11 +25,11 @@ namespace BobThreadPool
             }
         }
 
-        public void EnqueueJob(WaitCallback ts, object param = null)
+        public void EnqueueTask(Task t)
         {
-            lock (jobs)
+            lock (tasks)
             {
-                jobs.Enqueue(new Job(ts, param));
+                tasks.Enqueue(t);
             }
         }
 
@@ -37,9 +37,9 @@ namespace BobThreadPool
         {
             if (ignoreWaitingTasks)
             {
-                for (int i = 0; i < jobs.Count; i++)
+                for (int i = 0; i < tasks.Count; i++)
                 {
-                    jobs.Dequeue();
+                    tasks.Dequeue().Dispose();
                 }
 
                 for (int i = 0; i < threads.Count; i++)
@@ -48,28 +48,6 @@ namespace BobThreadPool
                 }
 
             }
-            //else
-            //{
-            //    new Thread(() => {
-            //        while (true)
-            //        {
-            //            lock (jobs)
-            //            {
-            //                if (jobs.Count == 0)
-            //                {
-            //                    break;
-            //                }
-            //            }
-            //        }
-            //        while (true)
-            //        {
-            //            for (int i = 0; i < threads.Count; i++)
-            //            {
-            //                if(threads[i].)
-            //            }
-            //        }
-            //    }).Start();
-            //}
         }
 
         private void WaitForTask()
@@ -77,17 +55,18 @@ namespace BobThreadPool
             //TODO wait for task queue to get item from it
             while (true)
             {
-                lock (jobs)
+                lock (tasks)
                 {
-                    if (jobs.Count != 0)
+                    if (tasks.Count != 0)
                     {
                         //TODO do the task's job!
-                        Job j = jobs.Dequeue();
-                        j.Run();
+                        Task t = tasks.Dequeue();
+                        t.Start();
                     }
                 }
             }
         }
 
+        
     }
 }
