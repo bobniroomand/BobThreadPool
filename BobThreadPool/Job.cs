@@ -11,7 +11,7 @@ namespace BobThreadPool
         Action task;
         public JobState State { get; private set; }
 
-        Job(Action a)
+        public Job(Action a)
         {
             task = a;
             State = JobState.Waiting;
