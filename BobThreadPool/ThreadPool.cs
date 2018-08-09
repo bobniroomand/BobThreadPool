@@ -33,6 +33,23 @@ namespace BobThreadPool
             }
         }
 
+        public void CloseThreadPool(bool ignoreWaitingTasks)
+        {
+            if (ignoreWaitingTasks)
+            {
+                for (int i = 0; i < tasks.Count; i++)
+                {
+                    tasks.Dequeue().Dispose();
+                }
+
+                for (int i = 0; i < threads.Count; i++)
+                {
+                    threads[i].Abort();
+                }
+
+            }
+        }
+
         private void WaitForTask()
         {
             //TODO wait for task queue to get item from it
@@ -49,5 +66,7 @@ namespace BobThreadPool
                 }
             }
         }
+
+        
     }
 }
