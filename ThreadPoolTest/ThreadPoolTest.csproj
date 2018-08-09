@@ -48,5 +48,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BobThreadPool\BobThreadPool.csproj">
+      <Project>{6533d3be-0f0c-4f98-a09e-7ca9b4bf1b4d}</Project>
+      <Name>BobThreadPool</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
