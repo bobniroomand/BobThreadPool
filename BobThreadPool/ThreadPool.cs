@@ -17,7 +17,6 @@ namespace BobThreadPool
         {
             tasks = new Queue<Task>();
             threads = new List<Thread>();
-            //in vase teste
             for (int i = 0; i < size; i++)
             {
                 Thread newThread = new Thread(WaitForTask);
