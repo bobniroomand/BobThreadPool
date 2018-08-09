@@ -25,6 +25,14 @@ namespace BobThreadPool
             }
         }
 
+        public void EnqueueTask(Task t)
+        {
+            lock (tasks)
+            {
+                tasks.Enqueue(t);
+            }
+        }
+
         private void WaitForTask()
         {
             //TODO wait for task queue to get item from it
