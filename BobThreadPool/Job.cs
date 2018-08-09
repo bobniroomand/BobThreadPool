@@ -2,25 +2,28 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace BobThreadPool
 {
     class Job
     {
-        Action task;
+        WaitCallback function;
+        object parameter;
         public JobState State { get; private set; }
 
-        public Job(Action a)
+        public Job(WaitCallback ts, object p = null)
         {
-            task = a;
+            function = ts;
+            this.parameter = p;
             State = JobState.Waiting;
         }
 
         public void Run()
         {
             State = JobState.Working;
-            task();
+            function(parameter);
             State = JobState.Terminated;
         }
 
