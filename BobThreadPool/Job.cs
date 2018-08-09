@@ -17,7 +17,7 @@ namespace BobThreadPool
             State = JobState.Waiting;
         }
 
-        void Run()
+        public void Run()
         {
             State = JobState.Working;
             task();
