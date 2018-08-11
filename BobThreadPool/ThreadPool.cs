@@ -74,18 +74,18 @@ namespace BobThreadPool
 
         private void WaitForTask()
         {
-            //TODO wait for task queue to get item from it
             while (true)
             {
+                Job j = null;
                 lock (jobs)
                 {
                     if (jobs.Count != 0)
                     {
-                        //TODO do the task's job!
-                        Job j = jobs.Dequeue();
-                        j.Run();
+                        j = jobs.Dequeue();
                     }
                 }
+                if (j != null)
+                    j.Run();
             }
         }
 
